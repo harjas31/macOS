@@ -1,23 +1,10 @@
 from setuptools import setup
-import customtkinter
-import os
-
-def get_data_files():
-    data_files = [('customtkinter', customtkinter.DATA_PATH)]
-    
-    # Add all .py files except main2.py
-    for file in os.listdir('.'):
-        if file.endswith('.py') and file != 'main2.py':
-            data_files.append(file)
-    
-    return data_files
 
 APP = ['main2.py']
-DATA_FILES = get_data_files()
+DATA_FILES = []
 OPTIONS = {
     'argv_emulation': True,
     'packages': ['certifi', 'customtkinter'],
-    'includes': ['tkinter', 'customtkinter'],
     'excludes': ['client_secret.json'],
     'plist': {
         'CFBundleName': "ProductInfoFetcher",
