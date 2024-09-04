@@ -15,21 +15,41 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.x'
+        python-version: '3.9'
     
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
+        pip install -r requirements.txt
         pip install py2app
+    
+    - name: Create icon file
+      run: |
+        mkdir icon.iconset
+        sips -z 16 16 app_icon.png --out icon.iconset/icon_16x16.png
+        sips -z 32 32 app_icon.png --out icon.iconset/icon_16x16@2x.png
+        sips -z 32 32 app_icon.png --out icon.iconset/icon_32x32.png
+        sips -z 64 64 app_icon.png --out icon.iconset/icon_32x32@2x.png
+        sips -z 128 128 app_icon.png --out icon.iconset/icon_128x128.png
+        sips -z 256 256 app_icon.png --out icon.iconset/icon_128x128@2x.png
+        sips -z 256 256 app_icon.png --out icon.iconset/icon_256x256.png
+        sips -z 512 512 app_icon.png --out icon.iconset/icon_256x256@2x.png
+        sips -z 512 512 app_icon.png --out icon.iconset/icon_512x512.png
+        cp app_icon.png icon.iconset/icon_512x512@2x.png
+        iconutil -c icns icon.iconset
+        mv icon.icns app_icon.icns
     
     - name: Build application
       run: python setup.py py2app
     
     - name: Create DMG
-      run: hdiutil create -volname YourAppName -srcfolder dist/YourAppName.app -ov -format UDZO YourAppName.dmg
+      run: |
+        mkdir dmg
+        cp -r dist/ProductInfoFetcher.app dmg/
+        hdiutil create -volname ProductInfoFetcher -srcfolder dmg -ov -format UDZO ProductInfoFetcher.dmg
     
     - name: Upload DMG
       uses: actions/upload-artifact@v2
       with:
-        name: YourAppName
-        path: YourAppName.dmg
+        name: ProductInfoFetcher
+        path: ProductInfoFetcher.dmg
