@@ -27,7 +27,6 @@ OPTIONS = {
         'CFBundleVersion': "1.0.0",
         'CFBundleShortVersionString': "1.0",
     },
-    'iconfile': 'app_icon.icns',
 }
 
 setup(
